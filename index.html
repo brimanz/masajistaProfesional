@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brimanz — Masajista Profesional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        base: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            200: '#e7e5e4',
+                            300: '#d6d3d1',
+                            400: '#a8a29e',
+                            500: '#78716c',
+                            600: '#57534e',
+                            700: '#44403c',
+                            800: '#292524',
+                            900: '#1c1917',
+                            950: '#0f0e0d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #fafaf9; }
+        ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes lineGrow {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .animate-fade-up {
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .animate-scale-in {
+            animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .animate-slide-down {
+            animation: slideDown 0.5s ease forwards;
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.96);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-scale.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Stagger delays */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+
+        /* Hero parallax image */
+        .hero-image {
+            transition: transform 0.1s linear;
+        }
+
+        /* Service card hover line */
+        .service-line {
+            width: 0;
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .service-card:hover .service-line {
+            width: 100%;
+        }
+
+        /* Nav link underline */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #1c1917;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            clip-path: inset(0 0 100% 0);
+            transition: clip-path 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-menu.open {
+            clip-path: inset(0 0 0 0);
+        }
+
+        /* Toast notification */
+        .toast {
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Breathing effect on hero */
+        .breathe {
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        /* Image grayscale hover */
+        .img-hover {
+            filter: grayscale(30%);
+            transition: filter 0.7s ease, transform 0.7s ease;
+        }
+
+        .img-hover:hover {
+            filter: grayscale(0%);
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="bg-base-50 text-base-900 font-sans antialiased overflow-x-hidden">
+
+    <!-- ========== NAVIGATION ========== -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#hero" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-full bg-base-900 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <span class="text-base-50 text-xs font-semibold">B</span>
+                </div>
+                <span class="font-serif text-lg tracking-tight">Brimanz</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#hero" class="nav-link relative text-sm font-medium text-base-600 hover:text-base-900 transition-colors duration-200">Inicio</a>
+                <a href="#about" class="nav-link relative text-sm font-medium text-base-600 hover:text-base-900 transition-colors duration-200">Acerca de</a>
+                <a href="#services" class="nav-link relative text-sm font-medium text-base-600 hover:text-base-900 transition-colors duration-200">Servicios</a>
+                <a href="#contact" class="nav-link relative text-sm font-medium text-base-600 hover:text-base-900 transition-colors duration-200">Contacto</a>
+                <a href="#contact" class="ml-2 px-5 py-2 bg-base-900 text-base-50 text-xs font-semibold rounded-full hover:bg-base-800 transition-all duration-200 hover:shadow-lg">
+                    Reservar Cita
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger -->
+            <button id="menuBtn" class="md:hidden flex flex-col gap-1.5 p-2 group" aria-label="Menú">
+                <span class="hamburger-line w-5 h-[1.5px] bg-base-900 transition-all duration-300 origin-center"></span>
+                <span class="hamburger-line w-5 h-[1.5px] bg-base-900 transition-all duration-300 origin-center"></span>
+                <span class="hamburger-line w-3.5 h-[1.5px] bg-base-900 transition-all duration-300 origin-center group-hover:w-5"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu" class="mobile-menu fixed inset-0 z-40 bg-base-50/95 backdrop-blur-xl md:hidden">
+        <div class="flex flex-col items-center justify-center h-full gap-8">
+            <a href="#hero" class="mobile-link text-3xl font-serif text-base-900 hover:text-base-500 transition-colors" onclick="closeMenu()">Inicio</a>
+            <a href="#about" class="mobile-link text-3xl font-serif text-base-900 hover:text-base-500 transition-colors" onclick="closeMenu()">Acerca de</a>
+            <a href="#services" class="mobile-link text-3xl font-serif text-base-900 hover:text-base-500 transition-colors" onclick="closeMenu()">Servicios</a>
+            <a href="#contact" class="mobile-link text-3xl font-serif text-base-900 hover:text-base-500 transition-colors" onclick="closeMenu()">Contacto</a>
+            <a href="#contact" class="mt-4 px-8 py-3 bg-base-900 text-base-50 text-sm font-semibold rounded-full" onclick="closeMenu()">Reservar Cita</a>
+        </div>
+    </div>
+
+    <!-- ========== HERO ========== -->
+    <section id="hero" class="relative min-h-screen flex items-center overflow-hidden">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <img
+                src="https://picsum.photos/seed/relaxing-spa-massage/1920/1080.jpg"
+                alt="Terapia de masaje relajante"
+                class="hero-image breathe w-full h-full object-cover"
+                style="filter: grayscale(60%) contrast(1.1); opacity: 0.25;"
+            >
+            <div class="absolute inset-0 bg-gradient-to-r from-base-50 via-base-50/80 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-base-50 via-transparent to-base-50/40"></div>
+        </div>
+
+        <!-- Decorative elements -->
+        <div class="absolute top-32 right-20 w-64 h-64 rounded-full border border-base-200 opacity-40 hidden lg:block"></div>
+        <div class="absolute bottom-40 right-40 w-32 h-32 rounded-full border border-base-300 opacity-30 hidden lg:block"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-16 w-full">
+            <div class="max-w-2xl">
+                <!-- Badge -->
+                <div class="animate-fade-up inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-base-200 bg-base-100/80 backdrop-blur-sm mb-8" style="animation-delay: 0.1s;">
+                    <span class="w-1.5 h-1.5 rounded-full bg-base-400 animate-pulse"></span>
+                    <span class="text-xs font-medium text-base-500 tracking-wider uppercase">Bienestar & Restauración</span>
+                </div>
+
+                <!-- Heading -->
+                <h1 class="animate-fade-up font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight text-base-900 mb-6" style="animation-delay: 0.2s;">
+                    Tu cuerpo merece<br>
+                    <span class="text-base-400">descansar</span>
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="animate-fade-up text-base-500 text-lg md:text-xl leading-relaxed mb-10 max-w-lg" style="animation-delay: 0.4s;">
+                    Más de una década devolviendo bienestar a través del tacto consciente, la técnica precisa y la terapia personalizada.
+                </p>
+
+                <!-- CTAs -->
+                <div class="animate-fade-up flex flex-wrap gap-4" style="animation-delay: 0.6s;">
+                    <a href="#contact" class="group inline-flex items-center gap-2 px-7 py-3.5 bg-base-900 text-base-50 text-sm font-semibold rounded-full hover:bg-base-800 transition-all duration-300 hover:shadow-xl hover:shadow-base-900/10">
+                        Agendar sesión
+                        <iconify-icon icon="lucide:arrow-right" class="text-base-50 group-hover:translate-x-1 transition-transform duration-300" width="16"></iconify-icon>
+                    </a>
+                    <a href="#services" class="group inline-flex items-center gap-2 px-7 py-3.5 border border-base-300 text-base-700 text-sm font-medium rounded-full hover:border-base-900 hover:text-base-900 transition-all duration-300">
+                        Ver servicios
+                        <iconify-icon icon="lucide:chevron-down" class="text-base-400 group-hover:translate-y-0.5 transition-transform duration-300" width="16"></iconify-icon>
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="animate-fade-up mt-16 flex gap-12 md:gap-16" style="animation-delay: 0.8s;">
+                    <div>
+                        <span class="block font-serif text-3xl md:text-4xl text-base-900">10+</span>
+                        <span class="text-xs text-base-400 mt-1 block tracking-wider uppercase">Años de experiencia</span>
+                    </div>
+                    <div class="w-px bg-base-200"></div>
+                    <div>
+                        <span class="block font-serif text-3xl md:text-4xl text-base-900">2.5k</span>
+                        <span class="text-xs text-base-400 mt-1 block tracking-wider uppercase">Sesiones realizadas</span>
+                    </div>
+                    <div class="w-px bg-base-200 hidden sm:block"></div>
+                    <div class="hidden sm:block">
+                        <span class="block font-serif text-3xl md:text-4xl text-base-900">100%</span>
+                        <span class="text-xs text-base-400 mt-1 block tracking-wider uppercase">Clientes satisfechos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      
+    </section>
+
+    <!-- ========== ABOUT ========== -->
+    <section id="about" class="py-24 md:py-32 bg-base-50 relative overflow-hidden">
+        <!-- Subtle decorative -->
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-base-200 to-transparent"></div>
+
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16 md:gap-20 items-center">
+                <!-- Image -->
+                <div class="reveal-left relative">
+                    <div class="relative overflow-hidden rounded-2xl">
+                        <img
+                            src="https://picsum.photos/seed/physiotherapist-hands/800/1000.jpg"
+                            alt="Masajista profesional"
+                            class="img-hover w-full aspect-[4/5] object-cover rounded-2xl"
+                        >
+                    </div>
+                    <!-- Floating card -->
+                    <div class="absolute -bottom-6 -right-4 md:-right-8 bg-white rounded-xl p-5 shadow-xl shadow-base-900/5 border border-base-100">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-base-100 flex items-center justify-center">
+                                <iconify-icon icon="lucide:award" class="text-base-700" width="20"></iconify-icon>
+                            </div>
+                            <div>
+                                <span class="text-sm font-semibold text-base-900 block">Certificado</span>
+                                <span class="text-xs text-base-400">Tratamiento de pacientes en Fisioterapia</span>
+                            </div>
+
+                            <div class="w-10 h-10 rounded-full bg-base-100 flex items-center justify-center">
+                                <iconify-icon icon="lucide:award" class="text-base-700" width="20"></iconify-icon>
+                            </div>
+                            <div>
+                                <span class="text-sm font-semibold text-base-900 block">Certificado</span>
+                                <span class="text-xs text-base-400">Aplicacion profesional de Masajes</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Decorative corner -->
+                    <div class="absolute -top-4 -left-4 w-24 h-24 border-t border-l border-base-200 rounded-tl-2xl hidden md:block"></div>
+                </div>
+
+                <!-- Content -->
+                <div class="reveal-right">
+                    <span class="text-xs font-semibold uppercase tracking-[0.2em] text-base-400 mb-4 block">Acerca de</span>
+                    <h2 class="font-serif text-3xl md:text-4xl tracking-tight text-base-900 mb-6">
+                        Aliviando el dolor<br>con intención y presencia
+                    </h2>
+                    <div class="w-12 h-px bg-base-300 mb-8"></div>
+                    <p class="text-base-500 leading-relaxed mb-6">
+                        Con más de <strong class="text-base-700 font-medium">10 años de experiencia</strong> en el campo de la terapia manual, he dedicado mi carrera a comprender el cuerpo humano como un sistema integral. Cada sesión es un espacio escuchado, donde la técnica se encuentra con la empatía.
+                    </p>
+                    <p class="text-base-500 leading-relaxed mb-8">
+                        Mi abordaje combina fisioterapia clínica, terapias descontracturantes y técnicas de relajación profunda, adaptando cada tratamiento a las necesidades únicas de quien confía en mis manos. Creo firmemente que el bienestar no se improvisa: <em class="text-base-600 not-italic font-medium">se construye sesión a sesión</em>.
+                    </p>
+
+                    <!-- Features list -->
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 group">
+                            <div class="w-8 h-8 rounded-full bg-base-100 flex items-center justify-center group-hover:bg-base-900 group-hover:text-base-50 transition-all duration-300">
+                                <iconify-icon icon="lucide:check" width="14" class="text-base-500 group-hover:text-base-50 transition-colors duration-300"></iconify-icon>
+                            </div>
+                            <span class="text-sm text-base-600">Formación continua en técnicas avanzadas</span>
+                        </div>
+                        <div class="flex items-center gap-3 group">
+                            <div class="w-8 h-8 rounded-full bg-base-100 flex items-center justify-center group-hover:bg-base-900 group-hover:text-base-50 transition-all duration-300">
+                                <iconify-icon icon="lucide:check" width="14" class="text-base-500 group-hover:text-base-50 transition-colors duration-300"></iconify-icon>
+                            </div>
+                            <span class="text-sm text-base-600">Enfoque personalizado e integral</span>
+                        </div>
+                        <div class="flex items-center gap-3 group">
+                            <div class="w-8 h-8 rounded-full bg-base-100 flex items-center justify-center group-hover:bg-base-900 group-hover:text-base-50 transition-all duration-300">
+                                <iconify-icon icon="lucide:check" width="14" class="text-base-500 group-hover:text-base-50 transition-colors duration-300"></iconify-icon>
+                            </div>
+                            <span class="text-sm text-base-600">Espacio pensado para tu descanso profundo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SERVICES ========== -->
+    <section id="services" class="py-24 md:py-32 bg-base-100 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-base-200 to-transparent"></div>
+
+        <!-- Decorative circle -->
+        <div class="absolute -right-32 top-1/2 -translate-y-1/2 w-96 h-96 rounded-full border border-base-200/50 hidden lg:block"></div>
+
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Header -->
+            <div class="text-center mb-16 md:mb-20">
+                <span class="reveal text-xs font-semibold uppercase tracking-[0.2em] text-base-400 mb-4 block">Servicios</span>
+                <h2 class="reveal delay-1 font-serif text-3xl md:text-4xl lg:text-5xl tracking-tight text-base-900 mb-6">
+                    Terapias para tu bienestar
+                </h2>
+                <p class="reveal delay-2 text-base-500 max-w-xl mx-auto leading-relaxed">
+                    Cada servicio está diseñado para responder a una necesidad específica de tu cuerpo. Juntos, construimos tu camino hacia el alivio.
+                </p>
+            </div>
+
+            <!-- Services Grid -->
+            <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
+                <!-- Service 1 -->
+                <div class="service-card reveal delay-1 group bg-white rounded-2xl p-8 md:p-10 border border-base-200/60 hover:border-base-300 transition-all duration-500 hover:shadow-lg hover:shadow-base-900/5 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-px">
+                        <div class="service-line h-px bg-base-900"></div>
+                    </div>
+                    <div class="flex items-start gap-5 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-base-100 flex items-center justify-center flex-shrink-0 group-hover:bg-base-900 transition-all duration-500">
+                            <iconify-icon icon="lucide:hand" width="22" class="text-base-600 group-hover:text-base-50 transition-colors duration-500"></iconify-icon>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-base-400 mb-1 block">01</span>
+                            <h3 class="font-serif text-xl md:text-2xl text-base-900 group-hover:text-base-700 transition-colors duration-300">Masaje Relajante & Descontracturante</h3>
+                        </div>
+                    </div>
+                    <p class="text-base-500 text-sm leading-relaxed mb-6">
+                        Combinación de maniobras suaves y profundas que liberan la tensión acumulada, mejoran la circulación y restauran la movilidad muscular. Ideal para quienes cargan estrés crónico o rigidez corporal.
+                    </p>
+                    <div class="flex items-center gap-2 text-xs text-base-400">
+                        <iconify-icon icon="lucide:clock" width="14"></iconify-icon>
+                        <span>60 — 90 min</span>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card reveal delay-2 group bg-white rounded-2xl p-8 md:p-10 border border-base-200/60 hover:border-base-300 transition-all duration-500 hover:shadow-lg hover:shadow-base-900/5 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-px">
+                        <div class="service-line h-px bg-base-900"></div>
+                    </div>
+                    <div class="flex items-start gap-5 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-base-100 flex items-center justify-center flex-shrink-0 group-hover:bg-base-900 transition-all duration-500">
+                            <iconify-icon icon="lucide:activity" width="22" class="text-base-600 group-hover:text-base-50 transition-colors duration-500"></iconify-icon>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-base-400 mb-1 block">02</span>
+                            <h3 class="font-serif text-xl md:text-2xl text-base-900 group-hover:text-base-700 transition-colors duration-300">Fisioterapia & Rehabilitación Deportiva</h3>
+                        </div>
+                    </div>
+                    <p class="text-base-500 text-sm leading-relaxed mb-6">
+                        Tratamiento basado en evidencia para lesiones deportivas y condiciones musculoesqueléticas. Incluye evaluación funcional, técnicas manuales y plan de ejercicios personalizado para tu recuperación completa.
+                    </p>
+                    <div class="flex items-center gap-2 text-xs text-base-400">
+                        <iconify-icon icon="lucide:clock" width="14"></iconify-icon>
+                        <span>60 — 90 min</span>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card reveal delay-3 group bg-white rounded-2xl p-8 md:p-10 border border-base-200/60 hover:border-base-300 transition-all duration-500 hover:shadow-lg hover:shadow-base-900/5 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-px">
+                        <div class="service-line h-px bg-base-900"></div>
+                    </div>
+                    <div class="flex items-start gap-5 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-base-100 flex items-center justify-center flex-shrink-0 group-hover:bg-base-900 transition-all duration-500">
+                            <iconify-icon icon="lucide:footprints" width="22" class="text-base-600 group-hover:text-base-50 transition-colors duration-500"></iconify-icon>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-base-400 mb-1 block">03</span>
+                            <h3 class="font-serif text-xl md:text-2xl text-base-900 group-hover:text-base-700 transition-colors duration-300">Reflexología</h3>
+                        </div>
+                    </div>
+                    <p class="text-base-500 text-sm leading-relaxed mb-6">
+                        Terapia basada en la estimulación de puntos reflejos en pies y manos, conectados con distintos órganos y sistemas del cuerpo. Una experiencia profunda de equilibrio y armonización integral.
+                    </p>
+                    <div class="flex items-center gap-2 text-xs text-base-400">
+                        <iconify-icon icon="lucide:clock" width="14"></iconify-icon>
+                        <span>60 min</span>
+                    </div>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="service-card reveal delay-4 group bg-white rounded-2xl p-8 md:p-10 border border-base-200/60 hover:border-base-300 transition-all duration-500 hover:shadow-lg hover:shadow-base-900/5 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-px">
+                        <div class="service-line h-px bg-base-900"></div>
+                    </div>
+                    <div class="flex items-start gap-5 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-base-100 flex items-center justify-center flex-shrink-0 group-hover:bg-base-900 transition-all duration-500">
+                            <iconify-icon icon="lucide:flame" width="22" class="text-base-600 group-hover:text-base-50 transition-colors duration-500"></iconify-icon>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-semibold uppercase tracking-[0.15em] text-base-400 mb-1 block">04</span>
+                            <h3 class="font-serif text-xl md:text-2xl text-base-900 group-hover:text-base-700 transition-colors duration-300">Experiencia Sensorial — Aromaterapia</h3>
+                        </div>
+                    </div>
+                    <p class="text-base-500 text-sm leading-relaxed mb-6">
+                        Sesión inmersiva que combina masaje con aceites esenciales seleccionados para tu estado emocional. La aromaterapia potencia la relajación, reduce la ansiedad y transforma la sesión en un ritual de reconexión sensorial.
+                    </p>
+                    <div class="flex items-center gap-2 text-xs text-base-400">
+                        <iconify-icon icon="lucide:clock" width="14"></iconify-icon>
+                        <span>75 — 90 min</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA BAND ========== -->
+    <section class="py-20 md:py-24 bg-base-900 relative overflow-hidden">
+        <!-- Texture overlay -->
+        <div class="absolute inset-0 opacity-5" style="background-image: url('https://picsum.photos/seed/texture-dark/1920/400.jpg'); background-size: cover; background-position: center;"></div>
+        <div class="absolute inset-0" style="background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.04) 0%, transparent 70%);"></div>
+
+        <div class="relative max-w-7xl mx-auto px-6 text-center">
+            <div class="reveal">
+                <span class="text-xs font-semibold uppercase tracking-[0.2em] text-base-400 mb-4 block">Tu bienestar no puede esperar</span>
+                <h2 class="font-serif text-3xl md:text-4xl lg:text-5xl text-base-50 tracking-tight mb-8">
+                    El momento de pausa<br class="hidden md:block"> es ahora
+                </h2>
+                <a href="#contact" class="group inline-flex items-center gap-3 px-8 py-4 bg-base-50 text-base-900 text-sm font-semibold rounded-full hover:bg-base-100 transition-all duration-300 hover:shadow-xl hover:shadow-base-50/10">
+                    Reservar mi sesión
+                    <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform duration-300" width="16"></iconify-icon>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CONTACT ========== -->
+    <section id="contact" class="py-24 md:py-32 bg-base-50 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-base-200 to-transparent"></div>
+
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-16 md:gap-20">
+                <!-- Left -->
+                <div class="reveal-left">
+                    <span class="text-xs font-semibold uppercase tracking-[0.2em] text-base-400 mb-4 block">Contacto</span>
+                    <h2 class="font-serif text-3xl md:text-4xl tracking-tight text-base-900 mb-6">
+                        Tomemos el primer paso
+                    </h2>
+                    <div class="w-12 h-px bg-base-300 mb-8"></div>
+                    <p class="text-base-500 leading-relaxed mb-10">
+                        Escribime o llamame para coordinar tu primera sesión. También podés consultarme por duración, precios y disponibilidad horaria. Cada consulta es bienvenida.
+                    </p>
+
+                    <!-- Contact info -->
+                    <div class="space-y-6">
+                        <!-- Phone -->
+                        <a href="tel:+5491112345678" class="group flex items-center gap-4 p-4 rounded-xl border border-base-200/60 hover:border-base-300 hover:bg-white transition-all duration-300">
+                            <div class="w-12 h-12 rounded-xl bg-base-100 flex items-center justify-center group-hover:bg-base-900 transition-all duration-300">
+                                <iconify-icon icon="lucide:phone" width="20" class="text-base-600 group-hover:text-base-50 transition-colors duration-300"></iconify-icon>
+                            </div>
+                            <div>
+                                <span class="text-xs text-base-400 block mb-0.5">Teléfono</span>
+                                <span class="text-sm font-medium text-base-900 group-hover:text-base-700 transition-colors">+58 0416-0770000</span>
+                            </div>
+                        </a>
+
+                        
+                        <!-- Location -->
+                        <div class="group flex items-center gap-4 p-4 rounded-xl border border-base-200/60">
+                            <div class="w-12 h-12 rounded-xl bg-base-100 flex items-center justify-center">
+                                <iconify-icon icon="lucide:map-pin" width="20" class="text-base-600"></iconify-icon>
+                            </div>
+                            <div>
+                                <span class="text-xs text-base-400 block mb-0.5">Ubicación</span>
+                                <span class="text-sm font-medium text-base-900">Bocono, Estado Trujillo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                          </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="py-12 bg-base-900 border-t border-base-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <!-- Logo -->
+                <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-full bg-base-50 flex items-center justify-center">
+                        <span class="text-base-900 text-[10px] font-semibold">B</span>
+                    </div>
+                    <span class="font-serif text-base-50 text-sm">Brimanz</span>
+                </div>
+
+                <!-- Social -->
+                <div class="flex items-center gap-5">
+                    
+                    <a href="tel:+5804160770000" class="w-9 h-9 rounded-full border border-base-700 flex items-center justify-center hover:bg-base-50 hover:border-base-50 group transition-all duration-300">
+                        <iconify-icon icon="lucide:phone" width="14" class="text-base-400 group-hover:text-base-900 transition-colors duration-300"></iconify-icon>
+                    </a>
+                </div>
+
+                <!-- Copyright -->
+                <p class="text-xs text-base-500">
+                    © 2026 Brimanz. Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+  
+    <!-- ========== SCRIPTS ========== -->
+    <script>
+        // --- Mobile Menu ---
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const hamburgerLines = menuBtn.querySelectorAll('.hamburger-line');
+        let menuOpen = false;
+
+        menuBtn.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            mobileMenu.classList.toggle('open', menuOpen);
+            document.body.style.overflow = menuOpen ? 'hidden' : '';
+
+            if (menuOpen) {
+                hamburgerLines[0].style.transform = 'rotate(45deg) translate(3px, 3px)';
+                hamburgerLines[1].style.opacity = '0';
+                hamburgerLines[2].style.transform = 'rotate(-45deg) translate(3px, -3px)';
+                hamburgerLines[2].style.width = '20px';
+            } else {
+                hamburgerLines[0].style.transform = '';
+                hamburgerLines[1].style.opacity = '1';
+                hamburgerLines[2].style.transform = '';
+                hamburgerLines[2].style.width = '';
+            }
+        });
+
+        function closeMenu() {
+            menuOpen = false;
+            mobileMenu.classList.remove('open');
+            document.body.style.overflow = '';
+            hamburgerLines[0].style.transform = '';
+            hamburgerLines[1].style.opacity = '1';
+            hamburgerLines[2].style.transform = '';
+            hamburgerLines[2].style.width = '';
+        }
+
+        // --- Navbar scroll effect ---
+        const navbar = document.getElementById('navbar');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 50) {
+                navbar.classList.add('bg-base-50/90', 'backdrop-blur-xl', 'shadow-sm', 'shadow-base-900/5');
+            } else {
+                navbar.classList.remove('bg-base-50/90', 'backdrop-blur-xl', 'shadow-sm', 'shadow-base-900/5');
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // --- Scroll Reveal ---
+        const revealElements = document.querySelectorAll('.reveal, .reveal-scale, .reveal-left, .reveal-right');
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // --- Hero parallax ---
+        const heroImage = document.querySelector('.hero-image');
+        window.addEventListener('scroll', () => {
+            const scrollY = window.pageYOffset;
+            if (scrollY < window.innerHeight && heroImage) {
+                heroImage.style.transform = `scale(1.03) translateY(${scrollY * 0.15}px)`;
+            }
+        });
+
+        // --- Form submission ---
+        const contactForm = document.getElementById('contactForm');
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toastMsg');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+
+            if (!name || !phone) {
+                showToast('Por favor completá nombre y teléfono.', true);
+                return;
+            }
+
+            showToast(`¡Gracias ${name}! Te contactaremos pronto.`);
+            contactForm.reset();
+        });
+
+        function showToast(msg, isError = false) {
+            toastMsg.textContent = msg;
+            toast.querySelector('iconify-icon').setAttribute('icon', isError ? 'lucide:alert-circle' : 'lucide:check-circle-2');
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // --- Smooth scroll for anchor links ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
